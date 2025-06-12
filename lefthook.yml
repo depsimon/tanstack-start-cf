@@ -1,0 +1,14 @@
+assert_lefthook_installed: true
+colors: false
+no_tty: true
+skip_output:
+  - meta
+  - summary
+pre-commit:
+  commands:
+    biome:
+      run: bunx @biomejs/biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {staged_files}
+      skip:
+        - merge
+        - rebase
+      stage_fixed: true
