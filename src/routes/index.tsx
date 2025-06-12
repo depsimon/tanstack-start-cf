@@ -1,47 +1,47 @@
-import * as fs from "node:fs";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
+import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { toast } from "sonner";
-
-const filePath = "count.txt";
-
-async function readCount() {
-	return parseInt(
-		await fs.promises.readFile(filePath, "utf-8").catch(() => "0"),
-	);
-}
-
-const getCount = createServerFn({ method: "GET" }).handler(() => {
-	return readCount();
-});
-
-const updateCount = createServerFn({ method: "POST" })
-	.validator((addBy: number) => addBy)
-	.handler(async ({ data }) => {
-		const count = await readCount();
-		await fs.promises.writeFile(filePath, `${count + data}`);
-	});
+import { getCountCookie, updateCountCookie } from "~/functions/count-cookie";
+import { getCountKv, updateCountKv } from "~/functions/count-kv";
 
 export const Route = createFileRoute("/")({
 	component: Home,
-	loader: async () => await getCount(),
+	loader: async () => {
+		return {
+			countCookie: await getCountCookie(),
+			countKv: await getCountKv(),
+		};
+	},
 });
 
 function Home() {
 	const router = useRouter();
-	const state = Route.useLoaderData();
+	const { countCookie, countKv } = Route.useLoaderData();
 
 	return (
-		<button
-			type="button"
-			onClick={() => {
-				updateCount({ data: 1 }).then(() => {
-					toast.success("Count updated with success!");
-					router.invalidate();
-				});
-			}}
-		>
-			Add 1 to {state}?
-		</button>
+		<div className="flex items-center gap-4">
+			<button
+				type="button"
+				onClick={() => {
+					updateCountCookie({ data: 1 }).then(() => {
+						toast.success("Count updated with success!");
+						router.invalidate();
+					});
+				}}
+			>
+				Add 1 to {countCookie}? (Cookies)
+			</button>
+			<button
+				type="button"
+				onClick={() => {
+					updateCountKv({ data: 1 }).then(() => {
+						toast.success("Count updated with success!");
+						router.invalidate();
+					});
+				}}
+			>
+				Add 1 to {countKv}? (KV)
+			</button>
+			|<Link to="/about">ℹ About</Link>
+		</div>
 	);
 }
