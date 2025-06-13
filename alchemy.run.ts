@@ -5,7 +5,7 @@ const BRANCH_PREFIX = process.env.BRANCH_PREFIX ?? "dev";
 
 const appName = "tanstack-start";
 
-const app = await alchemy("tanstack-start-cloudflare", {
+const app = await alchemy(`${appName}-cloudflare`, {
 	stage: process.env.USER ?? "dev",
 	phase: process.argv.includes("--destroy") ? "destroy" : "up",
 });
@@ -16,7 +16,7 @@ const defaultKv = await KVNamespace(`${appName}-${BRANCH_PREFIX}-kv`, {
 });
 
 const db = await D1Database(`${appName}-${BRANCH_PREFIX}-db`, {
-	name: `${appName}-${BRANCH_PREFIX}-kv`,
+	name: `${appName}-${BRANCH_PREFIX}-db`,
 	adopt: true,
 	migrationsDir: "src/db/migrations",
 	primaryLocationHint: "weur",
@@ -26,7 +26,7 @@ const db = await D1Database(`${appName}-${BRANCH_PREFIX}-db`, {
 });
 
 export const website = await TanStackStart(
-	`tanstack-start-website-${BRANCH_PREFIX}`,
+	`${appName}-${BRANCH_PREFIX}-website`,
 	{
 		bindings: {
 			DEFAULT_KV: defaultKv,
