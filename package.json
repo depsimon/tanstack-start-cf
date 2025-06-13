@@ -7,6 +7,7 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"start": "node .output/server/index.mjs",
+		"db:migrate": "wrangler d1 migrations apply DB --local --config ./wrangler.jsonc",
 		"check": "biome check ./ --fix",
 		"format": "biome format ./ --fix",
 		"lint": "biome lint ./ --fix",

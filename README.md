@@ -10,6 +10,7 @@ This template uses the following tools:
 - [Biome](https://biomejs.dev/) as the linter & formatter
 - [Lefthook](https://lefthook.dev/) as the git hooks manager
 - [Tailwind CSS](https://tailwindcss.com/) as the CSS framework
+- [Cloudflare](https://cloudflare.com/) as the hosting
 
 ## Installation
 
