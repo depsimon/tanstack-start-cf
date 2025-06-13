@@ -51,3 +51,13 @@ bun run deploy # Will deploy resources in a `dev` namespace
 BRANCH_PREFIX=prod bun run deploy # Will deploy resources in a `prod` namespace
 BRANCH_PREFIX=staging bun run deploy # Will deploy resources in a `staging` namespace
 ```
+
+## Move the state to Cloudflare
+
+By default the state of your resources is stored in the file system of your project.
+
+You can change that by using another state storage like Durable Objects.
+
+You can easily do that by adding a few env variables or by copying the `.env.example` to `.env` and adapting the values.
+
+[Read the documentation](https://alchemy.run/docs/concepts/state.html#durable-objects-state-store-recommended)

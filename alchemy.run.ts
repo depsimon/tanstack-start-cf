@@ -1,13 +1,29 @@
 import alchemy from "alchemy";
-import { D1Database, KVNamespace, TanStackStart } from "alchemy/cloudflare";
+import {
+	D1Database,
+	DOStateStore,
+	KVNamespace,
+	TanStackStart,
+} from "alchemy/cloudflare";
 
 const BRANCH_PREFIX = process.env.BRANCH_PREFIX ?? "dev";
 
 const appName = "tanstack-start";
 
 const app = await alchemy(`${appName}-cloudflare`, {
-	stage: process.env.USER ?? "dev",
+	stage: BRANCH_PREFIX,
 	phase: process.argv.includes("--destroy") ? "destroy" : "up",
+	stateStore:
+		process.env.ALCHEMY_STATE_STORE === "cloudflare"
+			? (scope) =>
+					new DOStateStore(scope, {
+						apiKey: alchemy.secret(process.env.CLOUDFLARE_API_KEY),
+						email: process.env.CLOUDFLARE_EMAIL,
+						worker: {
+							name: `${appName}-state`,
+						},
+					})
+			: undefined,
 });
 
 const defaultKv = await KVNamespace(`${appName}-${BRANCH_PREFIX}-kv`, {
