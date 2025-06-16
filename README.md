@@ -13,6 +13,10 @@ This template uses the following tools:
 
 We use [Alchemy](https://alchemy.run/) to be orchestrate the deployment on Cloudflare with a KV & a D1 Database ready to be used.
 
+
+> [!TIP]
+Looking for a simpler template? Checkout the [Start Basic template](https://github.com/depsimon/tanstack-basic).
+
 ## Installation
 
 To setup a project from this template, the simplest way is to use gitpick:
