@@ -44,12 +44,12 @@ bun run deploy
 ```
 
 By default, this will deploy a dev version of your app.
-If you want to deploy a different version, the deployment accepts a `BRANCH_PREFIX` env that you can use to deploy any branch/environment.
+If you want to deploy a different version, the deployment accepts a `STAGE` env that you can use to deploy any branch/environment.
 
 ```sh
 bun run deploy # Will deploy resources in a `dev` namespace
-BRANCH_PREFIX=prod bun run deploy # Will deploy resources in a `prod` namespace
-BRANCH_PREFIX=staging bun run deploy # Will deploy resources in a `staging` namespace
+STAGE=prod bun run deploy # Will deploy resources in a `prod` namespace
+STAGE=staging bun run deploy # Will deploy resources in a `staging` namespace
 ```
 
 ## Move the state to Cloudflare

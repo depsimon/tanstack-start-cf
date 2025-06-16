@@ -6,12 +6,12 @@ import {
 	TanStackStart,
 } from "alchemy/cloudflare";
 
-const BRANCH_PREFIX = process.env.BRANCH_PREFIX ?? "dev";
+const STAGE = process.env.STAGE ?? "dev";
 
 const appName = "tanstack-start";
 
 const app = await alchemy(`${appName}-cloudflare`, {
-	stage: BRANCH_PREFIX,
+	stage: STAGE,
 	phase: process.argv.includes("--destroy") ? "destroy" : "up",
 	stateStore:
 		process.env.ALCHEMY_STATE_STORE === "cloudflare"
@@ -26,13 +26,13 @@ const app = await alchemy(`${appName}-cloudflare`, {
 			: undefined,
 });
 
-const defaultKv = await KVNamespace(`${appName}-${BRANCH_PREFIX}-kv`, {
-	title: `${appName}-${BRANCH_PREFIX}-kv`,
+const defaultKv = await KVNamespace(`${appName}-${STAGE}-kv`, {
+	title: `${appName}-${STAGE}-kv`,
 	adopt: true,
 });
 
-const db = await D1Database(`${appName}-${BRANCH_PREFIX}-db`, {
-	name: `${appName}-${BRANCH_PREFIX}-db`,
+const db = await D1Database(`${appName}-${STAGE}-db`, {
+	name: `${appName}-${STAGE}-db`,
 	adopt: true,
 	migrationsDir: "src/db/migrations",
 	primaryLocationHint: "weur",
@@ -41,15 +41,12 @@ const db = await D1Database(`${appName}-${BRANCH_PREFIX}-db`, {
 	},
 });
 
-export const website = await TanStackStart(
-	`${appName}-${BRANCH_PREFIX}-website`,
-	{
-		bindings: {
-			DEFAULT_KV: defaultKv,
-			DB: db,
-		},
+export const website = await TanStackStart(`${appName}-${STAGE}-website`, {
+	bindings: {
+		DEFAULT_KV: defaultKv,
+		DB: db,
 	},
-);
+});
 
 console.log({
 	url: website.url,
