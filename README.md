@@ -25,6 +25,7 @@ To setup a project from this template, the simplest way is to use gitpick:
 git clone https://github.com/depsimon/tanstack-start-cf.git my-app
 cd my-app
 bun install
+wrangler login # Make sure you're signed in to your CF account
 bun run deploy # Initial deployment of resources, required to use the bindings locally
 bun db:migrate # Apply migrations locally
 ```
