@@ -22,7 +22,7 @@ Looking for a simpler template? Checkout the [Start Basic template](https://gith
 To setup a project from this template, the simplest way is to use gitpick:
 
 ```sh
-git clone https://github.com/depsimon/tanstack-start-cf.git my-app
+bunx gitpick depsimon/tanstack-start-cf my-app
 cd my-app
 bun install
 wrangler login # Make sure you're signed in to your CF account
